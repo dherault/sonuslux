@@ -1,3 +1,6 @@
 {
-  "extends": "dherault"
+  "extends": "dherault",
+  "rules": {
+    "react/jsx-no-bind": "off"
+  }
 }
