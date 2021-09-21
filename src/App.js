@@ -37,7 +37,7 @@ function App() {
     setCurrentVariableIndex(variables.length)
   }
 
-  // console.log('variables', variables)
+  console.log('First variable', variables[0])
   // console.log('currentVariableIndex', currentVariableIndex)
 
   return (
