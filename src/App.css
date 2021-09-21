@@ -1,0 +1,14 @@
+.App-right {
+  border-left: 1px solid lightslategray;
+}
+
+.App-bottom {
+  border-top: 1px solid lightslategray;
+}
+
+.App-variable {
+  width: 128px;
+  height: 64px;
+  border: 2px solid tomato;
+  border-radius: 4px;
+}
