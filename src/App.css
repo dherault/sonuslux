@@ -7,8 +7,8 @@
 }
 
 .App-variable {
-  width: 128px;
+  width: 64px;
   height: 64px;
-  border: 2px solid tomato;
+  border: 2px solid;
   border-radius: 4px;
 }

@@ -7,7 +7,7 @@ const bitToNote = ['E2', 'A2']
 const nBits = 8
 
 function CostSelector({ onChange }) {
-  const [value, setValue] = useState(2)
+  const [value, setValue] = useState(0)
 
   useEffect(() => {
     let x = parseInt(value, 10)

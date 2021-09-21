@@ -1,24 +1,44 @@
 import './App.css'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
+import { useTheme } from '@material-ui/core'
 
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
 import Player from './Player'
+import Variable from './Variable'
 import CostSelector from './CostSelector'
 import ReferentialSelector from './ReferentialSelector'
 
 function App() {
+  const theme = useTheme()
   const [costNotes, setCostNotes] = useState([])
   const [referentialNotes, setReferentialNotes] = useState([])
   const [variables, setVariables] = useState([])
   const [currentVariableIndex, setCurrentVariableIndex] = useState(-1)
 
+  const handleVariableChange = useCallback(nextValue => {
+    const nextVariables = variables.slice()
+
+    if (nextValue) {
+      nextVariables.splice(currentVariableIndex, 1, nextValue)
+    }
+    else {
+      nextVariables.splice(currentVariableIndex, 1)
+      setCurrentVariableIndex(-1)
+    }
+
+    setVariables(nextVariables)
+  }, [variables, currentVariableIndex])
+
   function handleAddVariableClick() {
     setVariables(variables => [...variables, []])
-    setCurrentVariableIndex(variables.length + 1)
+    setCurrentVariableIndex(variables.length)
   }
+
+  // console.log('variables', variables)
+  // console.log('currentVariableIndex', currentVariableIndex)
 
   return (
     <div className="y1 w100vw h100vh">
@@ -39,20 +59,24 @@ function App() {
               Add variable
             </Button>
           </div>
-          <div className="mt-2">
-            <div className="mt-1">
-              {variables.map(variable => (
-                <div
-                  key={variable.join('')}
-                  className="App-variable"
-                >
+          <div className="x11 mt-3">
+            {variables.map((variable, index) => (
+              <div
+                key={variable.join('')}
+                className="x5 p-1 ml-1 no-select cursor-pointer App-variable"
+                style={{
+                  borderColor: theme.palette.primary.main,
+                }}
+                onClick={() => setCurrentVariableIndex(index)}
+              >
+                <Typography color="primary">
                   {variable[0] || null}
-                </div>
-              ))}
-            </div>
+                </Typography>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="w33 h100 p-2 App-right">
+        <div className="w50 h100 p-2 App-right">
           {currentVariableIndex === -1 ? (
             <div className="y5 w100 h100">
               <Typography variant="body2">
@@ -60,12 +84,17 @@ function App() {
               </Typography>
             </div>
           ) : (
-            'foo'
+            <Variable
+              key={variables[currentVariableIndex].join('')}
+              value={variables[currentVariableIndex]}
+              onChange={handleVariableChange}
+              onDelete={handleVariableChange}
+            />
           )}
         </div>
       </div>
       <div className="w100 p-2 App-bottom">
-        <Player notes={[...costNotes, ...referentialNotes]} />
+        <Player notes={[...costNotes, ...referentialNotes, ...variables.flat()]} />
       </div>
     </div>
   )

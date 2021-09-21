@@ -1,6 +1,6 @@
 .Note {
   width: 32px;
   height: 128px;
-  border-right: 2px solid lightskyblue;
-  border-bottom: 2px solid lightskyblue;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
 }

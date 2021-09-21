@@ -1,6 +1,7 @@
 import './App.css'
 
 import { useState } from 'react'
+import { useTheme } from '@material-ui/core'
 import * as Tone from 'tone'
 
 import Button from '@material-ui/core/Button'
@@ -12,6 +13,7 @@ import Note from './Note'
 const baseTempo = 851 / 8
 
 function Player({ notes }) {
+
   const [sampler, setSampler] = useState(null)
   const [ready, setReady] = useState(false)
 
@@ -71,8 +73,7 @@ function Player({ notes }) {
   return (
     <div className="x4">
       <div>
-        <Typography variant="body2">{sampler ? ready ? 'ready' : 'loading' : 'press start'}</Typography>
-        <div className="mt-2">
+        <div>
           <Button
             variant="outlined"
             color="primary"
@@ -89,6 +90,12 @@ function Player({ notes }) {
             Play
           </Button>
         </div>
+        <Typography
+          variant="body2"
+          className="mt-2 w100 text-align-center"
+        >
+          {sampler ? ready ? 'ready' : 'loading' : 'press start'}
+        </Typography>
       </div>
       <div className="x4 ml-4">
         <NoteGroup>
