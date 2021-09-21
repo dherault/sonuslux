@@ -8,8 +8,16 @@ import MenuItem from '@material-ui/core/MenuItem'
 import CarthesianPosition from './CarthesianPosition'
 
 const mainNotes = ['A4', 'B4', 'C4', 'D4', 'E4', 'F4', 'G4']
+
+const colorToChord = {
+  white: ['A4', 'C#5', 'E5'],
+  blue: ['B4', 'D#5', 'F#5'],
+  green: ['C4', 'E4', 'G4'],
+}
+const colors = Object.keys(colorToChord)
+
 const partTypeToPartInitiator = {
-  'Carthesian position': ['C3', 'E3', 'G3'],
+  'Carthesian position': ['C#3', 'F3', 'G#3'],
 }
 const partTypes = Object.keys(partTypeToPartInitiator)
 
@@ -17,12 +25,14 @@ function Variable({ value, onChange }) {
   // console.log('value', value)
   const {
     mainNote: initialMainNote,
+    colorChord: initialColorChord,
     parts: initialParts,
   } = deserialize(value)
 
   // console.log('initialParts', initialParts)
 
   const [mainNote, setMainNote] = useState(initialMainNote || mainNotes[0])
+  const [colorChord, setColorChord] = useState(initialColorChord || colorToChord[colors[0]])
   const [partType, setPartType] = useState(partTypes[0])
   const [parts, setParts] = useState(initialParts || [])
 
@@ -31,14 +41,11 @@ function Variable({ value, onChange }) {
   useEffect(() => {
     onChange(serialize({
       mainNote,
+      colorChord,
       parts,
     }))
   // eslint-disable-next-line
-  }, [mainNote, parts])
-
-  function handleAddPartClick() {
-    setParts(parts => [...parts, [partTypeToPartInitiator[partType]]])
-  }
+  }, [mainNote, parts, colorChord])
 
   function renderMainNote() {
     return (
@@ -59,6 +66,32 @@ function Variable({ value, onChange }) {
               value={note}
             >
               {note}
+            </MenuItem>
+          ))}
+        </Select>
+      </>
+    )
+  }
+
+  function renderColor() {
+    return (
+      <>
+        <Typography className="ml-2">
+          Color:
+        </Typography>
+        <Select
+          variant="outlined"
+          value={colorChord.join('-')}
+          onChange={event => setColorChord(event.target.value.split('-'))}
+          style={{ height: 40 }}
+          className="ml-1"
+        >
+          {colors.map(color => (
+            <MenuItem
+              key={color}
+              value={colorToChord[color].join('-')}
+            >
+              {color}
             </MenuItem>
           ))}
         </Select>
@@ -91,7 +124,7 @@ function Variable({ value, onChange }) {
         <Button
           variant="outlined"
           color="primary"
-          onClick={handleAddPartClick}
+          onClick={() => setParts(parts => [...parts, [partTypeToPartInitiator[partType]]])}
           style={{ height: 40 }}
           className="ml-1"
         >
@@ -169,8 +202,9 @@ function Variable({ value, onChange }) {
       <Typography variant="h6">
         Variable
       </Typography>
-      <div className="x4 mt-1">
+      <div className="x4 mt-3">
         {renderMainNote()}
+        {renderColor()}
         {renderPartSelector()}
       </div>
       <div className="mt-2">
@@ -203,6 +237,16 @@ function deserialize(notes) {
     }
   }
 
+  let colorChord = null
+
+  if (workingArray.length >= 1) {
+    colorChord = workingArray.shift()
+
+    if (!Array.isArray(colorChord)) {
+      throw new Error('!Array.isArray(colorChord)')
+    }
+  }
+
   const parts = []
 
   while (workingArray.length > 0) {
@@ -230,6 +274,7 @@ function deserialize(notes) {
 
   return {
     mainNote,
+    colorChord,
     parts,
   }
 }
@@ -238,10 +283,10 @@ function extractCarthesianPosition(notes) {
   return []
 }
 
-function serialize({ mainNote, parts }) {
+function serialize({ mainNote, colorChord, parts }) {
   // console.log('serialize parts', parts)
 
-  const variable = [mainNote]
+  const variable = [mainNote, colorChord]
 
   if (parts.length) variable.push(parts.flat(2))
 

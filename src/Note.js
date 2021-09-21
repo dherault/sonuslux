@@ -11,7 +11,10 @@ function Note({ note }) {
         className="Note x5"
         style={{ borderColor: theme.palette.primary.main }}
       >
-        <Typography color="primary">
+        <Typography
+          color="primary"
+          variant="body2"
+        >
           {note.toUpperCase()}
         </Typography>
       </div>
@@ -25,7 +28,10 @@ function Note({ note }) {
     >
       {note.map(n => (
         <div key={n}>
-          <Typography color="primary">
+          <Typography
+            color="primary"
+            variant="body2"
+          >
             {n.toUpperCase()}
           </Typography>
         </div>
