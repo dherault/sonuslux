@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -6,6 +6,10 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 
 import CarthesianPosition from './CarthesianPosition'
+
+import areNotesEqual from './utils/areNotesEqual'
+
+import allNotes from './notes'
 
 const mainNotes = ['A4', 'B4', 'C4', 'D4', 'E4', 'F4', 'G4']
 
@@ -39,11 +43,15 @@ function Variable({ value, onChange }) {
   // console.log('parts', parts)
 
   useEffect(() => {
-    onChange(serialize({
+    const notes = serialize({
       mainNote,
       colorChord,
       parts,
-    }))
+    })
+
+    if (areNotesEqual(notes, value)) return
+
+    onChange(notes)
   // eslint-disable-next-line
   }, [mainNote, parts, colorChord])
 
@@ -222,6 +230,29 @@ function findPartType(initiator) {
   return partTypes.find(partType => partTypeToPartInitiator[partType].join('') === initiatorString)
 }
 
+function extractCarthesianPosition(workingArray) {
+  const allCarthesianPositionNotes = Object.values(allNotes.carthesianPositionNotes).flat(Infinity)
+  const notes = []
+
+  while (allCarthesianPositionNotes.includes(workingArray[0])) {
+    notes.push(workingArray.shift())
+  }
+
+  return notes
+}
+
+function serialize({ mainNote, colorChord, parts }) {
+  // console.log('serialize parts', parts)
+
+  const variable = [mainNote, colorChord]
+
+  if (parts.length) variable.push(...parts.flat(1))
+
+  variable.push(mainNote)
+
+  return variable
+}
+
 function deserialize(notes) {
   const workingArray = notes.slice()
 
@@ -233,7 +264,7 @@ function deserialize(notes) {
     const alsoMainNote = workingArray.pop()
 
     if (mainNote !== alsoMainNote) {
-      throw new Error('mainNote !== alsoMainNote')
+      throw new Error('Variable: mainNote !== alsoMainNote')
     }
   }
 
@@ -243,7 +274,7 @@ function deserialize(notes) {
     colorChord = workingArray.shift()
 
     if (!Array.isArray(colorChord)) {
-      throw new Error('!Array.isArray(colorChord)')
+      throw new Error('Variable: !Array.isArray(colorChord)')
     }
   }
 
@@ -252,12 +283,13 @@ function deserialize(notes) {
   while (workingArray.length > 0) {
     const initiator = workingArray.shift()
 
+    // console.log('initiator', initiator)
+
     if (!Array.isArray(initiator)) {
-      throw new Error('!Array.isArray(initiator)')
+      throw new Error('Variable: !Array.isArray(initiator)')
     }
 
     const partType = findPartType(initiator)
-    // console.log('initiator', initiator)
     // console.log('partType', partType)
 
     switch (partType) {
@@ -267,7 +299,7 @@ function deserialize(notes) {
       }
 
       default: {
-        throw new Error('partType unknown')
+        throw new Error('Variable: partType unknown')
       }
     }
   }
@@ -279,20 +311,4 @@ function deserialize(notes) {
   }
 }
 
-function extractCarthesianPosition(notes) {
-  return []
-}
-
-function serialize({ mainNote, colorChord, parts }) {
-  // console.log('serialize parts', parts)
-
-  const variable = [mainNote, colorChord]
-
-  if (parts.length) variable.push(parts.flat(2))
-
-  variable.push(mainNote)
-
-  return variable
-}
-
-export default Variable
+export default memo(Variable, (prev, next) => areNotesEqual(prev.value, next.value))

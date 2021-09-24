@@ -24,12 +24,12 @@
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "flexpad": "^3.0.0",
-    "mpxx": "^3.0.0",
+    "mpxx": "^5.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "scribbletune": "^4.1.1",
-    "tone": "^14.7.43"
+    "tone": "^14.7.77"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

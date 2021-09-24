@@ -1,7 +1,6 @@
 import './App.css'
 
-import { useState } from 'react'
-import { useTheme } from '@material-ui/core'
+import { memo, useState } from 'react'
 import * as Tone from 'tone'
 
 import Button from '@material-ui/core/Button'
@@ -9,6 +8,8 @@ import Typography from '@material-ui/core/Typography'
 
 import NoteGroup from './NoteGroup'
 import Note from './Note'
+
+import areNotesEqual from './utils/areNotesEqual'
 
 const baseTempo = 851 / 8
 
@@ -111,4 +112,4 @@ function Player({ notes }) {
   )
 }
 
-export default Player
+export default memo(Player, (prev, next) => areNotesEqual(prev.value, next.value))

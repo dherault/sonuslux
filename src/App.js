@@ -7,12 +7,15 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 
 import Player from './Player'
+import Playground from './Playground'
 import Variable from './Variable'
 import CostSelector from './CostSelector'
 import ReferentialSelector from './ReferentialSelector'
 
 function App() {
   const theme = useTheme()
+  const [isPlayground, setIsPlayground] = useState(false)
+  const [playgroundNotes, setPlaygroundNotes] = useState([])
   const [costNotes, setCostNotes] = useState([])
   const [referentialNotes, setReferentialNotes] = useState([])
   const [variables, setVariables] = useState([])
@@ -40,11 +43,54 @@ function App() {
   console.log('First variable', variables[0])
   // console.log('currentVariableIndex', currentVariableIndex)
 
+  function renderTitle() {
+    return (
+      <Typography variant="h4">
+        Sonus Lux
+      </Typography>
+    )
+  }
+
+  function renderPlaygroundToggleButton() {
+    return (
+      <Button
+        color="primary"
+        variant="contained"
+        onClick={() => setIsPlayground(x => !x)}
+        className="mt-1"
+      >
+        Playground
+      </Button>
+    )
+  }
+
+  if (isPlayground) {
+    return (
+      <div className="y1 w100vw h100vh">
+        <div className="p-2">
+          {renderTitle()}
+          {renderPlaygroundToggleButton()}
+          <div className="mt-2">
+            <Playground
+              value={playgroundNotes}
+              onChange={setPlaygroundNotes}
+            />
+          </div>
+        </div>
+        <div className="flex-grow" />
+        <div className="w100 p-2 App-bottom">
+          <Player notes={playgroundNotes} />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="y1 w100vw h100vh">
       <div className="x1 w100 flex-grow">
         <div className="p-2 h100 flex-grow">
-          <Typography variant="h4">Sonus Lux</Typography>
+          {renderTitle()}
+          {renderPlaygroundToggleButton()}
           <div className="x4 mt-2">
             <CostSelector onChange={setCostNotes} />
             <div className="ml-2">
