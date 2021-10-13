@@ -1,6 +1,6 @@
 import './Note.css'
 
-import { Typography, useTheme } from '@material-ui/core'
+import { Typography, useTheme } from '@mui/material'
 
 function Note({ note }) {
   const theme = useTheme()

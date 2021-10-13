@@ -1,9 +1,9 @@
 import { memo, useEffect, useState } from 'react'
 
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
 
 import CarthesianPosition from './CarthesianPosition'
 

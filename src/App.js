@@ -1,10 +1,10 @@
 import './App.css'
 
 import { useCallback, useState } from 'react'
-import { useTheme } from '@material-ui/core'
+import { useTheme } from '@mui/material'
 
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
 
 import Player from './Player'
 import Playground from './Playground'

@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from 'react'
 
-import TextField from '@material-ui/core/TextField'
-import { Typography } from '@material-ui/core'
+import TextField from '@mui/material/TextField'
+import { Typography } from '@mui/material'
 
 import allNotes from './notes'
 

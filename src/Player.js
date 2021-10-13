@@ -3,8 +3,8 @@ import './App.css'
 import { memo, useState } from 'react'
 import * as Tone from 'tone'
 
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 
 import NoteGroup from './NoteGroup'
 import Note from './Note'
